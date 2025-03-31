@@ -115,7 +115,7 @@ class SASL(PlugIn):
         self.password=password
 
     def plugin(self,owner):
-        if 'version' not in self._owner.Dispatcher.Stream._document_attrs: self.startsasl='not-supported'
+        if self._owner.Dispatcher.Stream._document_attrs is not None and 'version' not in self._owner.Dispatcher.Stream._document_attrs: self.startsasl='not-supported'
         elif self._owner.Dispatcher.Stream.features:
             try: self.FeaturesHandler(self._owner.Dispatcher,self._owner.Dispatcher.Stream.features)
             except NodeProcessed: pass

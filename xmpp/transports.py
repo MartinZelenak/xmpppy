@@ -383,11 +383,12 @@ class TLS(PlugIn):
     def _startSSL(self):
         """ Immidiatedly switch socket to TLS mode. Used internally."""
         """ Here we should switch pending_data to hint mode."""
-        tcpsock=self._owner.Connection
         context=ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context.set_default_verify_paths()
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
 
+        tcpsock=self._owner.Connection
         tcpsock._sslObj    = context.wrap_socket(tcpsock._sock)
         tcpsock._sslIssuer = tcpsock._sslObj.getpeercert().get('issuer')
         tcpsock._sslServer = tcpsock._sslObj.getpeercert().get('server')
